@@ -1,0 +1,74 @@
+<section class="property-form">
+  <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <h3>Property Details</h3>
+
+    <div class="box">
+      <p>Property Name <span>*</span></p>
+      <input type="text" formControlName="property_name" placeholder="Enter property name" class="input" required>
+    </div>
+
+    <div class="box">
+      <p>Address <span>*</span></p>
+      <input type="text" formControlName="address" placeholder="Enter property address" class="input" required>
+    </div>
+
+    <div class="box">
+      <p>Location<span>*</span></p>
+      <input type="text" formControlName="location" placeholder="Enter property location" class="input" required>
+    </div>
+
+    <div class="flex">
+
+      
+      <div class="box" *ngFor="let field of dropdownFields">
+        <p>{{ field.label }} <span>*</span></p>
+        <select [formControlName]="field.name" class="input" required>
+          <option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>
+      <div class="box" *ngFor="let field of numericFields">
+        <p>{{ field.label }} <span>*</span></p>
+        <input type="number" [formControlName]="field.name" [placeholder]="field.placeholder" class="input" required>
+      </div>
+
+    </div>
+
+    <div class="box">
+      <p>Property Description <span>*</span></p>
+      <textarea formControlName="description" class="input" required placeholder="Write about the property..."></textarea>
+    </div>
+
+    <div class="checkbox">
+      <div class="box" *ngFor="let facility of facilities">
+        <p>
+          <input type="checkbox" [formControlName]="facility.name"> {{ facility.label }}
+        </p>
+      </div>
+    </div>
+
+
+    <div class="social-media">
+      <div class="box">
+        <p>Facebook Link</p>
+        <input type="url" formControlName="facebook" placeholder="Enter Facebook Profile Link" class="input">
+      </div>
+      <div class="box">
+        <p>Instagram Link</p>
+        <input type="url" formControlName="instagram" placeholder="Enter Instagram Profile Link" class="input">
+      </div>
+      <div class="box">
+        <p>Twitter Link</p>
+        <input type="url" formControlName="twitter" placeholder="Enter Twitter Profile Link" class="input">
+      </div>
+    </div>
+
+
+    <div class="box">
+      <p>Images <span>*</span></p>
+      <input type="file" (change)="onFileSelect($event)" class="input" accept="image/*" multiple required>
+    </div>
+    
+
+    <button type="submit" class="btn">Post Property</button>
+  </form>
+</section>

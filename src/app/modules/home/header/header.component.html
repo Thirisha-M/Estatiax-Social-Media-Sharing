@@ -1,0 +1,75 @@
+<!-- Header Section Starts -->
+<header class="header">
+  <!-- Top Navbar -->
+  <nav class="navbar nav-1">
+    <section class="flex">
+      <a routerLink="/home" class="logo">
+        <i class="fas fa-house"></i> EstatiaX
+      </a>
+
+      <ul>
+        <li>
+          <a routerLink="/post-property">Post Property
+            <i class="fas fa-paper-plane"></i>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </nav>
+
+  <!-- Main Navbar -->
+  <nav class="navbar nav-2">
+    <section class="flex">
+      <div id="menu-btn" class="fas fa-bars" (click)="toggleMenu()"></div>
+
+      <!-- Dropdown Menu -->
+      <div class="menu" [class.active]="menuOpen">
+        <ul>
+          <li>
+            <a href="#">Search <i class="fas fa-angle-down"></i></a>
+            <ul>
+              <li><a routerLink="/search-property">Filter Search</a></li>
+              <li><a routerLink="/listings">All Listings</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Help <i class="fas fa-angle-down"></i></a>
+            <ul>
+              <li><a routerLink="/about">About Us</a></li>
+              <li><a routerLink="/contact">Contact Us</a></li>
+              <li><a routerLink="/faq">FAQ</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Account & Saved -->
+      <ul>
+        <li><a routerLink="/saved-listings">Saved <i class="far fa-heart"></i></a></li>
+        
+        <li>
+          <a href="#">Account <i class="fas fa-angle-down"></i></a>
+          
+          <!-- Show only if user is NOT logged in -->
+          @if (!isLoggedIn) {
+            <ul>
+              <li><a routerLink="/login">Login</a></li>
+              <li><a routerLink="/register">Register</a></li>
+            </ul>
+          }
+        
+          <!-- Show only if user IS logged in -->
+          @if (isLoggedIn) {
+            <ul>
+              <li><a routerLink="/dashboard">Dashboard</a></li>
+              <li><a routerLink="/post-property">Post Property</a></li>
+              <li><a routerLink="/my-listings">My Listings</a></li>
+              <li><a routerLink="/update-profile">update-profile</a></li>
+              <li><a (click)="logout()">Logout</a></li>
+            </ul>
+          }
+        </li>
+      </ul>
+    </section>
+  </nav>
+</header>

@@ -1,0 +1,102 @@
+<app-header></app-header>
+<section class="view-property">
+  <h1 class="heading">Property Details</h1>
+
+  <div *ngIf="property; else noProperty">
+    <div class="details">
+      <div class="property-gallery">
+        
+        <!-- Main Image Section -->
+        <div class="main-image">
+          <img [src]="selectedImage" alt="Main Property Image" *ngIf="selectedImage; else defaultImage">
+        </div>
+  
+        <!-- Default Image -->
+        <ng-template #defaultImage>
+          <img src="assets/images/default.jpg" alt="Default Property Image">
+        </ng-template>
+  
+        <!-- Thumbnails -->
+        <div class="thumbnails">
+          <img *ngFor="let img of property.data.imageUrls.filePaths" 
+               [src]="img" 
+               alt="Property Thumbnail"
+               (click)="selectedImage = img"
+               class="thumbnail-img">
+        </div>
+  
+      </div>
+  
+  
+      
+
+      <h3 class="name">{{ property.data.property_name }}</h3>
+      <p class="location"><i class="fas fa-map-marker-alt"></i> {{ property.data.address }}</p>
+
+      <div class="info">
+        <p><i class="fas fa-indian-rupee-sign"></i> ₹{{ property.data.price }}</p>
+        <p><i class="fas fa-user"></i> {{ user?.data.name }}</p>
+        <p><i class="fas fa-phone"></i> <a [href]="'tel:' + user?.number">{{ user?.data.number }}</a></p>
+        <p><i class="fas fa-building"></i> {{ property.data.type }}</p>
+        <p><i class="fas fa-calendar"></i> {{ property.data.date }}</p>
+      </div>
+
+      <h3 class="title">Details</h3>
+      <div class="details-content">
+        <div class="box">
+          <p><i>Rooms:</i> {{ property.data.bhk }}</p>
+          <p><i>Carpet Area:</i> {{property.data.carpet_area}}</p>
+          <p><i>property_type: </i>{{property.data.property_type}}</p>
+          <p><i>furnished:  </i>{{property.data.furnished}}</p>
+        </div>
+      </div>
+
+      <h3 class="title">Amenities</h3>
+      <div class="amenities-content">
+        <div class="box">
+          <p><i>Lift:</i>{{property.data.lift}}</p>
+          <p><i>security_guard:</i>{{property.data.security_guard}}</p>
+          <p><i>gym:</i>{{property.data.gym}}</p>
+          <p><i>parking_area:</i>{{property.data.lift}}</p>
+          <p><i>shopping_mall:</i>{{property.data.shopping_mall}}</p>
+          <p><i>hospital:</i>{{property.data.hospital}}</p>
+          <p><i>school:</i>{{property.data.school}}</p>
+          <p><i>playground:</i>{{property.data.playground}}</p>
+          <p><i>watersupply:</i>{{property.data.watersupply}}</p>
+          <p><i>marketarea:</i>{{property.data.marketarea}}</p>
+        </div>
+      </div>
+
+      <h3 class="title">Description</h3>
+      <p class="description">{{ property.data.description }}</p>
+
+      <div class="social-links">
+        <a *ngIf="property?.data?.facebook" [href]="property?.data?.facebook" target="_blank">
+          <img src="assets/images/facebook-icon.jpg" alt="Facebook" />
+        </a>
+      
+        <a *ngIf="property?.data?.instagram" [href]="property?.data?.instagram" target="_blank">
+          <img src="assets/images/instagram-logo.jpg" alt="Instagram" />
+        </a>
+      
+        <a *ngIf="property?.data?.twitter" [href]="property?.data?.twitter" target="_blank">
+          <img src="assets/images/twitter-icon.jpg" alt="Twitter" />
+        </a>
+      </div>
+      
+
+      <div class="flex-btn">
+        <button class="save" (click)="toggleSave(property.id)">
+          <i class="fas" [class.fa-heart]="isSaved" [class.far]="!isSaved"></i>
+          <span>{{ isSaved ? 'Saved' : 'Save' }}</span>
+        </button>
+        <button class="btn" (click)="sendEnquiry()">Send Enquiry</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noProperty>
+    <p class="empty">Property not found! <a routerLink="/post-property" class="btn">Add New</a></p>
+  </ng-template>
+</section>
+<app-footer></app-footer>

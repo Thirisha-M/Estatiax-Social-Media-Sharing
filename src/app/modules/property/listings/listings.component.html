@@ -1,0 +1,49 @@
+<section class="listings">
+  <h1 class="heading">All properties</h1>
+
+  <div class="box-container" *ngIf="propertyList.length > 0; else noProperties">
+    <form *ngFor="let property of propertyList" class="box">
+      <div class="save-btn" (click)="toggleSave(property)">
+        <i class="fas" [ngClass]="property.saved ? 'fa-heart' : 'far fa-heart'"></i>
+        <span>{{ property.saved ? 'Saved' : 'Save' }}</span>
+      </div>
+
+      <div class="thumb">
+        <p class="total-images"><i class="far fa-image"></i><span>{{ property.totalImages }}</span></p>
+        <img [src]="getImagePath(property.image_01)" [alt]="property.name">
+      </div>
+
+      <div class="admin">
+        <h3>{{ property.user.name[0] }}</h3>
+        <div>
+          <p>{{ property.user.name }}</p>
+          <span>{{ property.date }}</span>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="price"><i class="fas fa-indian-rupee-sign"></i> {{ property.price | currency:'INR' }}</div>
+        <h3 class="name">{{ property.name }}</h3>
+        <p class="location"><i class="fas fa-map-marker-alt"></i> {{ property.address }}</p>
+
+        <div class="flex">
+          <p><i class="fas fa-house"></i> {{ property.type }}</p>
+          <p><i class="fas fa-tag"></i> {{ property.offer }}</p>
+          <p><i class="fas fa-bed"></i> {{ property.bhk }} BHK</p>
+          <p><i class="fas fa-trowel"></i> {{ property.status }}</p>
+          <p><i class="fas fa-couch"></i> {{ property.furnished }}</p>
+          <p><i class="fas fa-maximize"></i> {{ property.carpet }} sqft</p>
+        </div>
+
+        <div class="flex-btn">
+          <a [routerLink]="['/view-property', property.id]" class="btn">View Property</a>
+          <button type="button" class="btn" (click)="sendEnquiry(property)">Send Enquiry</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #noProperties>
+    <p class="empty">No properties added yet! <a routerLink="/post-property" class="btn">Add New</a></p>
+  </ng-template>
+</section>

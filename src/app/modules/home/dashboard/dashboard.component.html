@@ -1,0 +1,44 @@
+<section class="dashboard">
+    <h1 class="heading">Dashboard</h1>
+  
+    <div class="box-container">
+  
+      <div class="box">
+        <h3>Welcome!</h3>
+        <p>{{ user.name }}</p>
+        <a routerLink="/update-profile" class="btn">Update Profile</a>
+      </div>
+  
+      <div class="box">
+        <h3>Filter Search</h3>
+        <p>Search your dream property</p>
+        <a routerLink="/search-property" class="btn">Search Now</a>
+      </div>
+  
+      <div class="box">
+        <h3>{{ totalProperties }}</h3>
+        <p>Properties Listed</p>
+        <a routerLink="/my-listings" class="btn">View All Listings</a>
+      </div>
+  
+      <div class="box">
+        <h3>{{ totalRequestsReceived }}</h3>
+        <p>Requests Received</p>
+        <a routerLink="/requests" class="btn">View All Requests</a>
+      </div>
+  
+      <div class="box">
+        <h3>{{ totalRequestsSent }}</h3>
+        <p>Requests Sent</p>
+        <a routerLink="/saved" class="btn">View Saved Properties</a>
+      </div>
+  
+      <div class="box">
+        <h3>{{ totalSavedProperties }}</h3>
+        <p>Properties Saved</p>
+        <a routerLink="/saved" class="btn">View Saved Properties</a>
+      </div>
+  
+    </div>
+  </section>
+  

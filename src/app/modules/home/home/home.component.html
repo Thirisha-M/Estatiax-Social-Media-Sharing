@@ -1,0 +1,51 @@
+<app-header></app-header>
+<div class="home">
+    <section class="center">
+      <form (submit)="onSubmit()">
+        <h3>Find Your Perfect Home</h3>
+  
+        <div class="box">
+          <p>Enter Location <span>*</span></p>
+          <input type="text" [(ngModel)]="location" name="location" required maxlength="50" placeholder="Enter city name" class="input">
+        </div>
+  
+        <div class="flex">
+          <div class="box">
+            <p>Property Type <span>*</span></p>
+            <select [(ngModel)]="propertyType" name="type" class="input" required>
+              <option value="flat">Flat</option>
+              <option value="house">House</option>
+              <option value="shop">Shop</option>
+            </select>
+          </div>
+  
+          <div class="box">
+            <p>How Many BHK <span>*</span></p>
+            <select [(ngModel)]="bhk" name="bhk" class="input" required>
+              <option *ngFor="let i of [1,2,3,4,5,6,7,8,9]" [value]="i">{{i}} BHK</option>
+            </select>
+          </div>
+  
+          <div class="box">
+            <p>Minimum Budget <span>*</span></p>
+            <select [(ngModel)]="minBudget" name="minimum" class="input" required>
+              <option *ngFor="let budget of [500000, 1000000, 2000000, 3000000, 4000000, 5000000, 10000000, 20000000, 50000000]" [value]="budget">{{ budget | currency:'INR' }}</option>
+            </select>
+          </div>
+  
+          <div class="box">
+            <p>Maximum Budget <span>*</span></p>
+            <select [(ngModel)]="maxBudget" name="maximum" class="input" required>
+              <option *ngFor="let budget of [5000000, 10000000, 20000000, 50000000, 100000000]" [value]="budget">{{ budget | currency:'INR' }}</option>
+            </select>
+          </div>
+        </div>
+  
+        <button type="submit" class="btn">Search Property</button>
+      </form>
+    </section>
+  </div>
+  <app-services></app-services>
+  <app-faq></app-faq>
+  <app-footer></app-footer>
+  

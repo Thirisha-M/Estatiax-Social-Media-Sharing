@@ -1,0 +1,14 @@
+<section class="faq">
+    <h1 class="heading">FAQ</h1>
+  
+    <div class="box-container">
+      <div class="box" *ngFor="let faq of faqs; let i = index" [class.active]="faq.isOpen">
+        <h3 (click)="toggleFAQ(i)">
+          <span>{{ faq.question }}</span>
+          <i class="fas fa-angle-down"></i>
+        </h3>
+        <p *ngIf="faq.isOpen">{{ faq.answer }}</p>
+      </div>
+    </div>
+  </section>
+  

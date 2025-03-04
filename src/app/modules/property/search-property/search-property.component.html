@@ -1,0 +1,72 @@
+<section class="filters">
+    <form (ngSubmit)="searchProperties()">
+      <h3>Filter Your Search</h3>
+  
+      <div class="flex">
+        <!-- Location -->
+        <div class="box">
+          <p>Enter Location</p>
+          <input type="text" [(ngModel)]="searchFilters.location" name="location" required maxlength="50" placeholder="Enter city name" class="input">
+        </div>
+  
+        <!-- Offer Type -->
+        <div class="box">
+          <p>Offer Type</p>
+          <select [(ngModel)]="searchFilters.offer" name="offer" class="input" required>
+            <option *ngFor="let offer of offerTypes" [value]="offer">{{ offer }}</option>
+          </select>
+        </div>
+  
+        <!-- Property Type -->
+        <div class="box">
+          <p>Property Type</p>
+          <select [(ngModel)]="searchFilters.type" name="type" class="input" required>
+            <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+  
+        <!-- BHK -->
+        <div class="box">
+          <p>How Many BHK</p>
+          <select [(ngModel)]="searchFilters.bhk" name="bhk" class="input" required>
+            <option *ngFor="let bhk of bhkOptions" [value]="bhk">{{ bhk }}</option>
+          </select>
+        </div>
+  
+        <!-- Min Budget -->
+        <div class="box">
+          <p>Minimum Budget</p>
+          <select [(ngModel)]="searchFilters.min" name="min" class="input" required>
+            <option *ngFor="let budget of budgetOptions" [value]="budget.value">{{ budget.label }}</option>
+          </select>
+        </div>
+  
+        <!-- Max Budget -->
+        <div class="box">
+          <p>Maximum Budget</p>
+          <select [(ngModel)]="searchFilters.max" name="max" class="input" required>
+            <option *ngFor="let budget of budgetOptions" [value]="budget.value">{{ budget.label }}</option>
+          </select>
+        </div>
+  
+        <!-- Status -->
+        <div class="box">
+          <p>Status</p>
+          <select [(ngModel)]="searchFilters.status" name="status" class="input" required>
+            <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+          </select>
+        </div>
+  
+        <!-- Furnished -->
+        <div class="box">
+          <p>Furnished</p>
+          <select [(ngModel)]="searchFilters.furnished" name="furnished" class="input" required>
+            <option *ngFor="let furnished of furnishedOptions" [value]="furnished">{{ furnished }}</option>
+          </select>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn">Search Property</button>
+    </form>
+  </section>
+  

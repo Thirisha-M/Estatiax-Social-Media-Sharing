@@ -1,0 +1,60 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+  
+  <!-- Name Field -->
+  <label>Name:</label>
+  <input type="text" formControlName="name" placeholder="Enter Name" />
+  <div class="error" *ngIf="registerForm.get('name')?.hasError('required')">
+    Name is required.
+  </div>
+  <div class="error" *ngIf="registerForm.get('name')?.hasError('invalidName')">
+    Name must start with uppercase and only contain letters & spaces.
+  </div>
+  <div class="error" *ngIf="registerForm.get('name')?.hasError('uppercaseLimit')">
+    Name must contain exactly two uppercase letters.
+  </div>
+
+  <!-- Email Field -->
+  <label>Email:</label>
+  <input type="email" formControlName="email" placeholder="Enter Email" />
+  <div class="error" *ngIf="registerForm.get('email')?.hasError('required')">
+    Email is required.
+  </div>
+  <div class="error" *ngIf="registerForm.get('email')?.hasError('email')">
+    Enter a valid email.
+  </div>
+  <div class="error" *ngIf="registerForm.get('email')?.hasError('emailTaken')">
+    This email is already registered.
+  </div>
+
+  <!-- Phone Number -->
+  <label>Phone Number:</label>
+  <input type="text" formControlName="phone" placeholder="Enter Phone Number" />
+  <div class="error" *ngIf="registerForm.get('phone')?.hasError('required')">
+    Phone number is required.
+  </div>
+  <div class="error" *ngIf="registerForm.get('phone')?.hasError('pattern')">
+    Enter a valid phone number (10 digits, starts with 6-9).
+  </div>
+
+  <!-- Password -->
+  <label>Password:</label>
+  <input type="password" formControlName="password" placeholder="Enter Password" />
+  <div class="error" *ngIf="registerForm.get('password')?.hasError('required')">
+    Password is required.
+  </div>
+  <div class="error" *ngIf="registerForm.get('password')?.hasError('minlength')">
+    Password must be at least 8 characters.
+  </div>
+  <div class="error" *ngIf="registerForm.get('password')?.hasError('pattern')">
+    Password must have at least 1 uppercase letter, 1 digit, and 1 special character.
+  </div>
+
+  <!-- Confirm Password -->
+  <label>Confirm Password:</label>
+  <input type="password" formControlName="confirmPassword" placeholder="Confirm Password" />
+  <div class="error" *ngIf="registerForm.hasError('mismatch')">
+    Passwords do not match.
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid">Register</button>
+</form>

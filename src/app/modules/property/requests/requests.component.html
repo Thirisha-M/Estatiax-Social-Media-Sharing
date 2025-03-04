@@ -1,0 +1,22 @@
+<section class="requests-container">
+    <h2 class="heading">Property Requests</h2>
+  
+    <div class="box-container" *ngIf="requests.length > 0; else noRequests">
+      <div class="box" *ngFor="let request of requests">
+        <p>Name: <span>{{ request.sender.name }}</span></p>
+        <p>Number: <a [href]="'tel:' + request.sender.number">{{ request.sender.number }}</a></p>
+        <p>Email: <a [href]="'mailto:' + request.sender.email">{{ request.sender.email }}</a></p>
+        <p>Enquiry for: <span>{{ request.property.propertyName }}</span></p>
+  
+        <div class="btn-container">
+          <button class="btn delete-btn" (click)="deleteRequest(request.id)">Delete Request</button>
+          <a [routerLink]="['/view-property', request.property.id]" class="btn view-btn">View Property</a>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #noRequests>
+      <p class="empty">You have no requests!</p>
+    </ng-template>
+  </section>
+  

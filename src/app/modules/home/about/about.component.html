@@ -1,0 +1,47 @@
+<section class="about">
+    <div class="row">
+      <div class="image">
+        <img [src]="aboutImage" alt="About Us">
+      </div>
+      <div class="content">
+        <h3>Why Choose Us?</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum dolorem provident voluptatum distinctio laborum veritatis vitae suscipit praesentium fugiat unde?</p>
+        <a routerLink="/contact" class="inline-btn">Contact Us</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Steps Section -->
+  <section class="steps">
+    <h1 class="heading">3 Simple Steps</h1>
+    <div class="box-container">
+      <div class="box" *ngFor="let step of steps">
+        <img [src]="step.img" [alt]="step.title">
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Reviews Section -->
+  <section class="reviews">
+    <h1 class="heading">Client's Reviews</h1>
+    <div class="box-container">
+      <div class="box" *ngFor="let review of reviews">
+        <div class="user">
+          <img [src]="review.img" [alt]="review.name">
+          <div>
+            <h3>{{ review.name }}</h3>
+            <div class="stars">
+              <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                <i *ngIf="review.rating >= i + 1" class="fas fa-star"></i>
+                <i *ngIf="review.rating >= i + 0.5 && review.rating < i + 1" class="fas fa-star-half-alt"></i>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <p>{{ review.review }}</p>
+      </div>
+    </div>
+  </section>
+  
