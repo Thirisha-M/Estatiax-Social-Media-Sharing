@@ -28,20 +28,8 @@
           <button class="btn" (click)="deleteProperty(property._id)">Delete</button>
         </div>
 
-        <div class="social-share">
-          <a [href]="'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl" target="_blank">Facebook</a>
-          <a [href]="'https://twitter.com/intent/tweet?text=' + shareText + '&url=' + shareUrl" target="_blank">Twitter</a>
-          <a [href]="'https://api.whatsapp.com/send?text=' + shareText + ' ' + shareUrl" target="_blank">WhatsApp</a>
-        </div>
-    
-        
-        
-        
-      
-        
-
         <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
-        <button class="btn share-btn" (click)="shareProperty(property)">Share Property</button>
+        <button class="btn share-btn" (click)="shareOnWhatsApp(property)">Share Property</button>
       
       </div>
     </div>

@@ -4,6 +4,7 @@ import { PropertyService } from '../../../services/property.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-my-listings',
   standalone: true,
@@ -16,7 +17,7 @@ export class MyListingsComponent implements OnInit {
   userId: string = 'USER_ID';// Replace with actual user ID
   shareUrl: string = '';
   shareText: string = '';
-
+  previewProperty: any = null;
   constructor(private propertyService: PropertyService, private router: Router) { }
 
   ngOnInit() {
@@ -47,11 +48,11 @@ export class MyListingsComponent implements OnInit {
   }
 
 
-  // async shareOnWhatsApp(property: any) {
-  //   // const imageUrl = await this.urlToFile(property.data.imageUrls.filePaths[0], 'property.jpg', 'image/jpeg');
-  //   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(property.data.address)} ${encodeURIComponent(property.data.imageUrls.filePaths[0])}`;
-  //   window.open(whatsappUrl, '_blank');
-  // }
+  async shareOnWhatsApp(property: any) {
+    // const imageUrl = await this.urlToFile(property.data.imageUrls.filePaths[0], 'property.jpg', 'image/jpeg');
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(property.data.address)} ${encodeURIComponent(property.data.imageUrls.filePaths[0])}`;
+    window.open(whatsappUrl, '_blank');
+  }
 
 
   async shareProperty(property: any) {
