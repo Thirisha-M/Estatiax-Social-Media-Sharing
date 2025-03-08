@@ -1,0 +1,35 @@
+.shareoptions {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: center; /* Center align */
+  align-items: center;
+  margin-top: 20px;
+}
+
+.shareoptions button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.shareoptions button:first-child {
+  background-color: #1DA1F2; /* Twitter Blue */
+  color: white;
+}
+
+.shareoptions button:first-child:hover {
+  background-color: #0d8bd9;
+}
+
+.shareoptions button:last-child {
+  background-color: #ff9800; /* Vibrant Orange */
+  color: white;
+}
+
+.shareoptions button:last-child:hover {
+  background-color: #e68900;
+}

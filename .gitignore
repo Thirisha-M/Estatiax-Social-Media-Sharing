@@ -8,6 +8,7 @@
 
 # Node
 /node_modules
+/estatiaX-NODE/node_modules
 npm-debug.log
 yarn-error.log
 

@@ -1,10 +1,10 @@
 <section class="my-listings">
-  <h1 class="heading">My Listings</h1>
+  <h1 class="heading">My Listingssssssssss</h1>
 
   <div class="box-container">
     <div *ngIf="properties.length > 0; else noProperties">
       <div *ngFor="let property of properties" class="box">
-        <input type="hidden" name="property_id" [value]="property._id" />
+        <input type="hidden" [value]="property._id" />
 
         <div class="thumb">
           <img *ngIf="property.imageUrls?.filePaths?.length > 0; else noImage" 
@@ -13,24 +13,29 @@
         </div>
 
         <ng-template #noImage>
-          <img src="assets/images/default.jpg" alt="Default Image">
+          <img src="assets/images/default.jpg" alt="Default Image" />
         </ng-template>
 
-        <div class="price">
-          ₹ {{ property.data.price }}
-        </div>
-
+        <div class="price">₹ {{ property.data.price }}</div>
         <h3>{{ property.data.property_name }}</h3>
         <p>{{ property.data.address }}</p>
 
         <div class="flex-btn">
           <button class="btn" [routerLink]="['/update-property', property._id]">Update</button>
-          <button class="btn" (click)="deleteProperty(property._id)">Delete</button>
+          <!-- <button class="btn" (click)="deleteProperty(property._id)">Delete</button> -->
         </div>
 
         <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
-        <button class="btn share-btn" (click)="shareOnWhatsApp(property)">Share Property</button>
-      
+
+        
+
+         
+          <div class="shareoptions">
+            <button (click)="authorizeToken(property)">Authorize Twitter</button>
+            <button (click)="shareToTwitter(property)">🚀 Post Tweet</button>
+          </div>
+          
+        </div>  
       </div>
     </div>
 
@@ -38,5 +43,5 @@
       <p>No properties added yet!</p>
       <a [routerLink]="'/post-property'" class="btn">Add New Property</a>
     </ng-template>
-  </div>
+  
 </section>
