@@ -36,19 +36,20 @@ export class PropertyService {
     const url = `${this.apiBaseUrl}/access_token?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}&email=${email}`;
     return this.http.get(url);
   }
+
   updateUserTokens(email: string, oauth_token: string, oauth_token_secret: string) {
     return this.http.get(`${this.baseURL}/_design/View/_view/user_by_email?key="${email}"`, { headers: this.headers }).subscribe(
       (res: any) => {
-        console.log('✅ CouchDB Response:', res);
+        console.log('CouchDB Response:', res);
 
         if (res.rows.length > 0) {
           const user = res.rows[0].value; // Get User
           const userId = user._id;
           const userRev = user._rev;
 
-          console.log('🎯 Matched User:', user);
+          console.log(' Matched User:', user);
 
-          // Store Tokens Inside Data Object 🔥🔥
+          // Store Tokens Inside Data Object 
           user.data.oauth_token = oauth_token;
           user.data.oauth_token_secret = oauth_token_secret;
 
@@ -58,25 +59,25 @@ export class PropertyService {
             data: user.data,   // Updated Data
           };
 
-          console.log('🚀 Final Body:', body);
+          console.log('Final Body:', body);
 
           this.http.put(`${this.baseURL}/${userId}?rev=${userRev}`, body, { headers: this.headers }).subscribe(
             (updateRes) => {
-              console.log('✅ Token Updated:', updateRes);
-              alert('🎯 Twitter Token Stored Inside Data Successfully!');
+              console.log('Token Updated:', updateRes);
+              alert('Twitter Token Stored Inside Data Successfully!');
             },
             (err) => {
-              console.error('❌ Update Error:', err);
+              console.error(' Update Error:', err);
               alert('Failed to Store Twitter Token');
             }
           );
         } else {
-          console.error('🚫 User Not Found');
+          console.error(' User Not Found');
           alert('User Not Found!');
         }
       },
       (err) => {
-        console.error('❌ Fetch User Error:', err);
+        console.error(' Fetch User Error:', err);
       }
     );
   }
@@ -108,7 +109,7 @@ export class PropertyService {
         mergeMap((httpObservable) => httpObservable) // Merge the inner observable to handle API response
       );
   }
-  
+ 
   
 
 
@@ -134,6 +135,10 @@ export class PropertyService {
       catchError((error) => throwError(() => new Error(error)))
     );
   }
+  getAllProperties() {
+    return this.http.get(`${this.baseURL}/_design/View/_view/property_by_id?include_docs=true`, { headers: this.headers });
+  }
+  
 
   getPropertyById(propertyId: string): Observable<any> {
     return this.http.get(`${this.baseURL}/_design/View/_view/property_by_id?key="${propertyId}"`, { headers: this.headers }).pipe(

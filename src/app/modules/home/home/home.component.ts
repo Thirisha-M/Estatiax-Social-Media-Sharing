@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideRouter, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ServicesComponent } from '../services/services.component';
@@ -22,7 +22,6 @@ import { PropertyService } from '../../../services/property.service';
     FooterComponent,
     ServicesComponent,
     FaqComponent,
-    
   ],
 })
 export class HomeComponent {
@@ -34,10 +33,11 @@ export class HomeComponent {
 
   isAuthorized: boolean = false;
 
-  constructor(private propertyService: PropertyService, private router: Router) {} // 🔥 Injection Fixed ✅
+  constructor(private propertyService: PropertyService, private router: Router) { }
 
   ngOnInit() {
-    this.checkOAuthParams(); // Automatically check URL params on page load
+    this.checkOAuthParams();
+    this.checkUserAuthorization(); //  Check if user is already authorized
   }
 
   onSubmit() {
@@ -55,8 +55,8 @@ export class HomeComponent {
     const oauthToken = urlParams.get('oauth_token');
     const oauthVerifier = urlParams.get('oauth_verifier');
 
-    console.log('🔍 OAuth Token:', oauthToken); 
-    console.log('🔍 OAuth Verifier:', oauthVerifier);
+    console.log(' OAuth Token:', oauthToken);
+    console.log('OAuth Verifier:', oauthVerifier);
 
     if (oauthToken && oauthVerifier) {
       this.getAccessToken(oauthVerifier, oauthToken);
@@ -64,35 +64,38 @@ export class HomeComponent {
   }
 
   getAccessToken(oauthVerifier: string, oauthToken: string) {
-    const userEmail = localStorage.getItem('userEmail') ?? ''; // ✅ Email from session storage
+    const userEmail = localStorage.getItem('userEmail') ?? ''; // Get email from session storage
     if (!userEmail) {
-      console.error('🚫 Email is Missing');
+      console.error('Email is Missing');
       alert('User Email Not Found!');
       return;
     }
 
     this.propertyService.getAccessToken(oauthToken, oauthVerifier, userEmail).subscribe(
       (res: any) => {
-        console.log('✅ Access Token API Response:', res);
+        console.log('Access Token API Response:', res);
 
         if (res) {
-          alert('🎯 Twitter Access Token Generated & Stored Successfully!');
-          sessionStorage.setItem('twitter_access_token', res.access_token); // Token Stored
-          // this.redirectToMyListings(); // Redirect to My Listings Page
-          
+          alert('Twitter Access Token Generated & Stored Successfully!');
+          sessionStorage.setItem('twitter_access_token', res.access_token); //Store Token
           this.propertyService.updateUserTokens(userEmail, res.oauth_token, res.oauth_token_secret);
           this.router.navigate(['/my-listings']);
-          this.isAuthorized = true;
+          this.isAuthorized = true; //Set Authorization Status
         }
       },
       (err: any) => {
-        console.error('❌ Access Token Error:', err);
+        console.error('Access Token Error:', err);
         alert('Failed to Generate Access Token');
       }
     );
   }
 
+  checkUserAuthorization() {
+    const twitterAccessToken = sessionStorage.getItem('twitter_access_token'); //Check Token
+    this.isAuthorized = !!twitterAccessToken; //If token exists, user is authorized
+  }
+
   redirectToMyListings() {
-    window.location.href = '/my-listings'; // 🔥 Navigation Success
+    window.location.href = '/my-listings';
   }
 }

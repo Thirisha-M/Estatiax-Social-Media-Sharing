@@ -7,10 +7,10 @@
     Name is required.
   </div>
   <div class="error" *ngIf="registerForm.get('name')?.hasError('invalidName')">
-    Name must start with uppercase and only contain letters & spaces.
+    Name must start with uppercase and contain only letters & spaces.
   </div>
   <div class="error" *ngIf="registerForm.get('name')?.hasError('uppercaseLimit')">
-    Name must contain exactly two uppercase letters.
+    Name must contain exactly 1 or 2 uppercase letters.
   </div>
 
   <!-- Email Field -->
@@ -46,7 +46,7 @@
     Password must be at least 8 characters.
   </div>
   <div class="error" *ngIf="registerForm.get('password')?.hasError('pattern')">
-    Password must have at least 1 uppercase letter, 1 digit, and 1 special character.
+    Password must contain 1 uppercase letter, 1 digit, and 1 special character.
   </div>
 
   <!-- Confirm Password -->

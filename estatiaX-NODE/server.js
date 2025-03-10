@@ -34,10 +34,10 @@ app.use((req, res, next) => {
 
 // Server Start
 app.listen(port, () => {
-  console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
 
-// ✅ Image Upload API
+// Image Upload API
 app.post("/property-image/:userId/:propertyId", upload.array("images", 10), async (req, res) => {
   const { userId, propertyId } = req.params;
   const userFolder = path.join(__dirname, "properties", userId);
@@ -61,7 +61,7 @@ app.post("/property-image/:userId/:propertyId", upload.array("images", 10), asyn
   }
 });
 
-// ✅ Twitter API Setup
+//Twitter API Setup
 const oauth = OAuth({
   consumer: {
     key: "cvPxntimFW3510ahSMrblvwN5", // Your Twitter API Key
@@ -73,12 +73,12 @@ const oauth = OAuth({
   },
 });
 
-const callbackUrl = "https://c979-2405-201-e034-b01b-2d30-58c9-7e3b-b51d.ngrok-free.app"; // Your Angular Callback URL
+const callbackUrl = "https://1a8b-152-58-213-145.ngrok-free.app"; // Your Angular Callback URL
 const couchDBURL = "https://192.168.57.185:5984/estatiax";
 const userName = "d_couchdb";
 const password = "Welcome#2";
 
-// ✅ 1) Request Token API
+//1) Request Token API
 app.get("/twitter-api/request_token", async (req, res) => {
   const requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 
@@ -109,7 +109,7 @@ app.get("/twitter-api/request_token", async (req, res) => {
   }
 });
 
-// ✅ 2) Access Token API
+//2) Access Token API
 app.get("/twitter-api/access_token", async (req, res) => {
   const { oauth_token, oauth_verifier } = req.query;
   const accessTokenUrl = "https://api.twitter.com/oauth/access_token";
@@ -141,10 +141,10 @@ app.get("/twitter-api/access_token", async (req, res) => {
   }
 });
 
-// ✅ 3) Post Tweet API
+//3) Post Tweet API
 app.post("/twitter-api/post", async (req, res) => {
   const { text, oauth_token, oauth_token_secret } = req.body;
-  const endpointURL = "https://api.twitter.com/2/tweets"; // Twitter API v2 ✅
+  const endpointURL = "https://api.twitter.com/2/tweets"; // Twitter API v2
 
   const token = {
     key: oauth_token,
@@ -172,10 +172,10 @@ app.post("/twitter-api/post", async (req, res) => {
       }
     );
 
-    console.log("✅ Tweet Posted Successfully:", response.data);
+    console.log("Tweet Posted Successfully:", response.data);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("❌ Tweet Post Error:", error.response?.data || error.message);
+    console.error("Tweet Post Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Unsuccessful request", details: error.message });
   }
 });

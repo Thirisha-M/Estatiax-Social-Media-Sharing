@@ -1,0 +1,44 @@
+<div class="modal-overlay" *ngIf="isVisible">
+    <div class="modal-content">
+      <button class="close-btn" (click)="close()">✖</button>
+  
+      <h2>Share Property</h2>
+  
+      <div class="property-details">
+        <img *ngIf="property.imageUrls?.filePaths?.length > 0"
+             [src]="property.imageUrls.filePaths[0]"
+             alt="Property Image"
+             class="property-image" />
+        <h3>{{ property.data.property_name }}</h3>
+        <p>📍 {{ property.data.address }}</p>
+        <p>💰 ₹{{ property.data.price }}</p>
+      </div>
+  
+      <!-- Social Media Selection -->
+      <div class="social-icons">
+        <img src="assets/images/twitter-icon.jpg"
+             alt="Twitter"
+             class="social-icon"
+             [class.selected]="selectedPlatform === 'twitter'"
+             (click)="selectPlatform('twitter')" />
+  
+        <img src="assets/images/instagram-logo.jpg"
+             alt="Instagram"
+             class="social-icon"
+             [class.selected]="selectedPlatform === 'instagram'"
+             (click)="selectPlatform('instagram')" />
+  
+        <img src="assets/images/facebook-icon.jpg"
+             alt="Facebook"
+             class="social-icon"
+             [class.selected]="selectedPlatform === 'facebook'"
+             (click)="selectPlatform('facebook')" />
+      </div>
+  
+      <!-- Share Button -->
+      <button class="share-btn" (click)="share()">
+        Share on {{ selectedPlatform | titlecase }}
+      </button>
+    </div>
+  </div>
+  

@@ -20,6 +20,7 @@ import { ServicesComponent } from './modules/home/services/services.component';
 import { UpdateProfileComponent } from './modules/home/update-profile/update-profile.component';
 import { RequestsComponent } from './modules/property/requests/requests.component';
 import { UpdatePropertyComponent } from './modules/property/update-property/update-property.component';
+import { ModalComponent } from './modules/property/modal/modal.component';
 
 
 export const routes: Routes = [
@@ -42,7 +43,8 @@ export const routes: Routes = [
   {path:'services',component:ServicesComponent},
   {path:'update-profile',component:UpdateProfileComponent,canActivate:[AuthGuard]},
   {path:'requests',component:RequestsComponent,canActivate:[AuthGuard]},
-  {path:'update-property',component:UpdatePropertyComponent}
+  {path:'update-property',component:UpdatePropertyComponent},
+  {path:'modal',component:ModalComponent},
   
 
 

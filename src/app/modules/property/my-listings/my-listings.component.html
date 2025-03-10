@@ -1,15 +1,14 @@
 <section class="my-listings">
-  <h1 class="heading">My Listingssssssssss</h1>
+  <h1 class="heading">My Listings</h1>
 
   <div class="box-container">
-    <div *ngIf="properties.length > 0; else noProperties">
+    <div *ngIf="properties.length > 0">
       <div *ngFor="let property of properties" class="box">
         <input type="hidden" [value]="property._id" />
 
         <div class="thumb">
-          <img *ngIf="property.imageUrls?.filePaths?.length > 0; else noImage" 
-               [src]="property.imageUrls.filePaths[0]" 
-               alt="Property Image" />
+          <img *ngIf="property.imageUrls?.filePaths?.length > 0; else noImage" [src]="property.imageUrls.filePaths[0]"
+            alt="Property Image" />
         </div>
 
         <ng-template #noImage>
@@ -27,21 +26,26 @@
 
         <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
 
+        <div class="shareoptions">
+          <!-- Show "Authorize Twitter" button if the user doesn't have a token -->
+          <button *ngIf="!hasTwitterToken" (click)="authorizeToken(property)">Authorize Twitter</button>
+        
+          <!--Show "Post Tweet" button only if the user has a stored token -->
+          <button *ngIf="hasTwitterToken" class="btn" (click)="openModal(property)">🚀 Post Tweet</button>
+        </div>
         
 
-         
-          <div class="shareoptions">
-            <button (click)="authorizeToken(property)">Authorize Twitter</button>
-            <button (click)="shareToTwitter(property)">🚀 Post Tweet</button>
           </div>
-          
-        </div>  
-      </div>
-    </div>
+        </div>
+        <ng-template #noProperties>
+          <p>No properties added yet!</p>
+          <a [routerLink]="'/post-property'" class="btn">Add New Property</a>
+        </ng-template>
 
-    <ng-template #noProperties>
-      <p>No properties added yet!</p>
-      <a [routerLink]="'/post-property'" class="btn">Add New Property</a>
-    </ng-template>
-  
-</section>
+        <!--Modal for Sharing Property -->
+        <app-modal *ngIf="isModalOpen" [property]="selectedProperty" [isVisible]="isModalOpen"
+          (closeModal)="closeModal()" (shareTweet)="shareToTwitter()">
+        </app-modal>
+
+
+      </div>

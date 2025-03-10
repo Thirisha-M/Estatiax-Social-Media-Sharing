@@ -3,24 +3,41 @@ import { Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../../services/property.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from '../modal/modal.component';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-my-listings',
   templateUrl: './my-listings.component.html',
   styleUrls: ['./my-listings.component.css'],
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, ModalComponent],
 })
 export class MyListingsComponent implements OnInit {
   properties: any[] = [];
   userId: string = 'USER_ID'; // Replace with actual user ID
   shareText: string = '';
+  selectedProperty: any = null;
+  isModalOpen: boolean = false;
+  hasTwitterToken = false; //  Track if the user has an access token
+  userEmail: string | null = '';
 
-  constructor(private propertyService: PropertyService, private router: Router) {}
+
+  constructor(private propertyService: PropertyService, private router: Router, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadProperties();
-    this.checkOAuthParams(); // ✅ Keep Twitter OAuth Handling
+    this.checkOAuthParams(); //  Keep Twitter OAuth Handling
+    this.checkUserToken(); //  Check if the user has a stored Twitter token
+
+    this.loadProperties();
+    this.userEmail = localStorage.getItem('userEmail'); //Get email from localStorage
+    if (this.userEmail) {
+      console.log(' User Email Found:', this.userEmail);
+      this.checkUserToken(); //  Check if the user has an OAuth token
+    } else {
+      console.log(' No User Email Found in Local Storage');
+    }
   }
 
   loadProperties() {
@@ -47,15 +64,15 @@ export class MyListingsComponent implements OnInit {
     }
   }
 
-  // ✅ Twitter OAuth Handling (Preserved from Current Code)
+  //  Twitter OAuth Handling (Preserved from Current Code)
   getRequestToken(property: any) {
     this.propertyService.getRequestToken().subscribe(
       (res) => {
-        console.log('✅ Request Token:', res.oauth_token);
+        console.log('Request Token:', res.oauth_token);
         alert(`Request Token Generated for Property: ${property.property_name}`);
       },
       (err) => {
-        console.error('❌ Token Error:', err);
+        console.error(' Token Error:', err);
         alert('Failed to Generate Twitter Token');
       }
     );
@@ -63,58 +80,93 @@ export class MyListingsComponent implements OnInit {
 
   authorizeToken(property: any) {
     this.propertyService.getRequestToken().subscribe((res) => {
-      console.log("✅ Authorize URL:", res.authorizeUrl);
+      console.log("Authorize URL:", res.authorizeUrl);
       if (res.authorizeUrl) {
-        window.open(res.authorizeUrl, "_self"); // 🔥 Navigates to Twitter
+        window.open(res.authorizeUrl, "_self"); //  Navigates to Twitter
       } else {
-        alert("❌ Twitter Authorization Failed");
+        alert(" Twitter Authorization Failed");
       }
     });
   }
 
+  //  Check if the user already has an access token in CouchDB
+  checkUserToken() {
+    if (!this.userEmail) return;
+
+    this.propertyService.getUserDetails(this.userEmail).subscribe(
+      (res: any) => {
+        console.log('🔍 Checking User Token:', res);
+        if (res.rows.length > 0) {
+          const user = res.rows[0].value;
+          this.hasTwitterToken = !!(user.data.oauth_token && user.data.oauth_token_secret);
+          console.log(' Has Twitter Token:', this.hasTwitterToken);
+        } else {
+          console.log(' No User Data Found in CouchDB');
+        }
+      },
+      (err) => console.error(' Failed to fetch user details:', err)
+    );
+  }
   checkOAuthParams() {
     const urlParams = new URLSearchParams(window.location.search);
     const oauthToken = urlParams.get("oauth_token");
     const oauthVerifier = urlParams.get("oauth_verifier");
-    const userEmail = localStorage.getItem("user_id");
+    const userEmail = localStorage.getItem("userEmail");
 
     if (oauthToken && oauthVerifier && userEmail) {
       this.propertyService.getAccessToken(oauthToken, oauthVerifier, userEmail).subscribe(
         (res: any) => {
           localStorage.setItem("access_token", res.oauth_token);
           localStorage.setItem("access_token_secret", res.oauth_token_secret);
-          alert("✅ Twitter Token Stored Successfully");
+          this.hasTwitterToken = true; //Immediately show "Post Tweet" button
+          this.cdRef.detectChanges(); //Force UI update
+          alert("Twitter Token Stored Successfully");
         },
         (err) => {
-          console.error("❌ OAuth Error:", err);
+          console.error("OAuth Error:", err);
           alert("Twitter Token Storage Failed");
         }
       );
     }
   }
 
-  shareToTwitter(property: any) {
-    const tweet = prompt("Enter your tweet 📝");
-    if (tweet) {
-      const email = localStorage.getItem("userEmail");
-      if (email !== null) {
-        this.propertyService.postTweet(tweet, email).subscribe({
-          next: (res: any) => {
-            console.log("🎯 Tweet Response:", res);
-            alert("🚀 Tweet Posted Successfully!");
+
+  openModal(property: any) {
+    this.selectedProperty = property;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedProperty = null;
+  }
+
+  shareToTwitter() {
+    if (this.selectedProperty) {
+      const tweetText = `
+         Property For Sale!
+         Location: ${this.selectedProperty.data.address}
+         Price: ₹${this.selectedProperty.data.price}
+         View: ${window.location.origin}/view-property/${this.selectedProperty._id}
+      `;
+      const email = localStorage.getItem('userEmail');
+      if (email) {
+        this.propertyService.postTweet(tweetText, email).subscribe({
+          next: () => {
+            alert('Tweet Posted Successfully!');
+            this.closeModal();
           },
-          error: (err) => {
-            console.error("❌ API Error:", err);
-            alert("Failed to Post Tweet!");
+          error: () => {
+            alert('Failed to Post Tweet!');
           },
         });
       } else {
-        alert("❌ Email Not Found in Local Storage");
+        alert('Email Not Found in Local Storage');
       }
     }
   }
 
-  // ✅ Integrated WhatsApp & Web Share API (From Old Code)
+  // Integrated WhatsApp & Web Share API (From Old Code)
   async shareProperty(property: any) {
     this.shareText = `
       Location: ${property.data.location}
@@ -141,8 +193,8 @@ export class MyListingsComponent implements OnInit {
 
     if (navigator.canShare && navigator.canShare(shareOptions)) {
       navigator.share(shareOptions)
-        .then(() => console.log('✅ Property Shared Successfully'))
-        .catch((error) => console.error('❌ Sharing Failed', error));
+        .then(() => console.log('Property Shared Successfully'))
+        .catch((error) => console.error(' Sharing Failed', error));
     } else {
       alert('Sharing not supported on this browser');
     }
