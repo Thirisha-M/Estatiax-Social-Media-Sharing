@@ -73,7 +73,7 @@ const oauth = OAuth({
   },
 });
 
-const callbackUrl = "https://1a8b-152-58-213-145.ngrok-free.app"; // Your Angular Callback URL
+const callbackUrl = "  https://80fe-2401-4900-22c4-5e64-90cd-384e-b999-63a6.ngrok-free.app "; // Your Angular Callback URL
 const couchDBURL = "https://192.168.57.185:5984/estatiax";
 const userName = "d_couchdb";
 const password = "Welcome#2";
