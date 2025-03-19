@@ -1,0 +1,8 @@
+<app-modal
+  [isVisible]="isModalOpen"
+  [property]="selectedProperty"
+  (closeModal)="isModalOpen = false"
+  (shareTweet)="shareToTwitter($event)"
+  (shareInstagram)="shareToInstagram($event)"
+  (shareFacebook)="shareToFacebook($event)">
+</app-modal>

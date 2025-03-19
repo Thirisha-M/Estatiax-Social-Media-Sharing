@@ -1,6 +1,6 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()">
-  
-  <!-- Name Field -->
+
+
   <label>Name:</label>
   <input type="text" formControlName="name" placeholder="Enter Name" />
   <div class="error" *ngIf="registerForm.get('name')?.hasError('required')">
@@ -13,7 +13,7 @@
     Name must contain exactly 1 or 2 uppercase letters.
   </div>
 
-  <!-- Email Field -->
+
   <label>Email:</label>
   <input type="email" formControlName="email" placeholder="Enter Email" />
   <div class="error" *ngIf="registerForm.get('email')?.hasError('required')">
@@ -26,7 +26,7 @@
     This email is already registered.
   </div>
 
-  <!-- Phone Number -->
+
   <label>Phone Number:</label>
   <input type="text" formControlName="phone" placeholder="Enter Phone Number" />
   <div class="error" *ngIf="registerForm.get('phone')?.hasError('required')">
@@ -36,7 +36,7 @@
     Enter a valid phone number (10 digits, starts with 6-9).
   </div>
 
-  <!-- Password -->
+
   <label>Password:</label>
   <input type="password" formControlName="password" placeholder="Enter Password" />
   <div class="error" *ngIf="registerForm.get('password')?.hasError('required')">
@@ -49,7 +49,7 @@
     Password must contain 1 uppercase letter, 1 digit, and 1 special character.
   </div>
 
-  <!-- Confirm Password -->
+
   <label>Confirm Password:</label>
   <input type="password" formControlName="confirmPassword" placeholder="Confirm Password" />
   <div class="error" *ngIf="registerForm.hasError('mismatch')">

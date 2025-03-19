@@ -1,0 +1,33 @@
+<h2>Social Media Authorization</h2>
+
+<!-- Twitter -->
+<div class="auth-section">
+  <h3>Twitter</h3>
+  <button *ngIf="!hasTwitterToken" (click)="authorizeTwitter()">Authorize Twitter</button>
+  <button *ngIf="hasTwitterToken" (click)="openConfirmationModal('twitter')">Unauthorize Twitter</button>
+</div>
+
+<!-- Instagram -->
+<div class="auth-section">
+  <h3>Instagram</h3>
+  <button *ngIf="!hasInstagramToken" (click)="authorizeInstagram()">Authorize Instagram</button>
+  <button *ngIf="hasInstagramToken" (click)="openConfirmationModal('instagram')">Unauthorize Instagram</button>
+</div>
+
+<!-- Facebook -->
+<div class="auth-section">
+  <h3>Facebook</h3>
+  <button *ngIf="!hasFacebookToken" (click)="authorizeFacebook()">Authorize Facebook</button>
+  <button *ngIf="hasFacebookToken" (click)="openConfirmationModal('facebook')">Unauthorize Facebook</button>
+</div>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <p>If you unauthorize, you will not be able to share the property on {{ selectedPlatform }}. Are you sure?</p>
+    <div class="modal-buttons">
+      <button (click)="confirmUnauthorize()">OK</button>
+      <button (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

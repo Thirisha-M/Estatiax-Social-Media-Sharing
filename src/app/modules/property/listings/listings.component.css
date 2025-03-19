@@ -1,212 +1,190 @@
 .listings {
-    padding: 20px;
-}
-
-.heading {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: var(--black);
-}
-
-.filters {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.filters input, .filters select {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid var(--light-color);
-    border-radius: 5px;
-}
-
-/* 🔹 Grid Layout */
-.listings .box-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-/* 🔹 Property Box Styling */
-.listings .box-container .box {
-    background-color: var(--white);
-    box-shadow: var(--box-shadow);
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    border-radius: 10px;
-    overflow: hidden;
+}
+
+.listings .heading {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--black);
+    margin-bottom: 2rem;
+}
+
+.listings .box-container {
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2rem;
+}
+
+.listings .box {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem;
+    border-radius: 8px;
     transition: transform 0.3s ease-in-out;
 }
 
-.listings .box-container .box:hover {
-    transform: scale(1.03);
+.listings .box:hover {
+    transform: translateY(-5px);
 }
 
-/* 🔹 Property Image */
-.listings .box-container .box .thumb {
-    height: 30rem;
+/* Property Image */
+.listings .box .thumb {
     position: relative;
-    border-radius: 8px;
+    height: 200px;
     overflow: hidden;
+    border-radius: 8px;
 }
 
-.listings .box-container .box .thumb img {
+.listings .box .thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* 🔹 Image Count Indicator */
-.listings .box-container .box .thumb .total-images {
+/* Image Count & Type */
+.listings .box .thumb .total-images {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background-color: rgba(0, 0, 0, 0.3);
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
     color: var(--white);
-    padding: 0.5rem 1rem;
-    font-size: 1.7rem;
-    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1.4rem;
+    border-radius: 4px;
 }
 
-.listings .box-container .box .thumb .total-images i {
-    margin-right: 0.8rem;
+.listings .box .thumb .type {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: var(--main-color);
+    color: var(--white);
+    padding: 5px 10px;
+    font-size: 1.4rem;
+    border-radius: 4px;
 }
 
-/* 🔹 Seller Information */
-.listings .box-container .box .admin {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.listings .box-container .box .admin h3 {
-    height: 4.5rem;
-    width: 4.5rem;
-    line-height: 4.5rem;
-    border-radius: 50%;
-    font-size: 2rem;
+/* Save Button */
+.listings .box .save button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
     color: var(--black);
-    background-color: var(--light-bg);
-    text-align: center;
-    text-transform: uppercase;
+    cursor: pointer;
 }
 
-.listings .box-container .box .admin p {
-    color: var(--black);
-    font-size: 1.7rem;
-}
-
-.listings .box-container .box .admin span {
-    color: var(--light-color);
-    font-size: 1.5rem;
-}
-
-/* 🔹 Price Styling */
-.listings .box-container .box .price {
-    font-size: 2rem;
+.listings .box .save button:hover {
     color: var(--main-color);
-    font-weight: bold;
 }
 
-.listings .box-container .box .price i {
-    margin-right: 0.8rem;
-}
-
-/* 🔹 Property Title */
-.listings .box-container .box .name {
-    font-size: 2rem;
-    padding: 1rem 0;
+/* Property Name */
+.listings .box .name {
+    font-size: 1.8rem;
     color: var(--black);
-    line-height: 1.5;
+    margin-top: 1rem;
+    font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* 🔹 Location Styling */
-.listings .box-container .box .location {
-    font-size: 1.7rem;
-    color: var(--light-color);
-    padding-bottom: 1rem;
-}
-
-.listings .box-container .box .location i {
-    margin-right: 1rem;
-    color: var(--main-color);
-}
-
-/* 🔹 Property Features */
-.listings .box-container .box .flex {
-    background-color: var(--light-bg);
-    padding: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 2rem;
-    border-radius: 8px;
-}
-
-.listings .box-container .box .flex p {
-    font-size: 1.7rem;
-    flex: 1 1 20rem;
-}
-
-.listings .box-container .box .flex p i {
-    color: var(--main-color);
-    margin-right: 0.8rem;
-}
-
-.listings .box-container .box .flex p span {
-    color: var(--light-color);
-}
-
-/* 🔹 Buttons */
-.listings .box-container .box .btn {
-    display: inline-block;
-    padding: 12px 20px;
-    background: navy;
-    color: white;
-    text-decoration: none;
+/* Location */
+.listings .box .location {
     font-size: 1.6rem;
-    font-weight: bold;
-    border-radius: 5px;
-    text-align: center;
-    transition: background 0.3s ease-in-out;
+    color: var(--light-color);
+    display: flex;
+    align-items: center;
 }
 
-.listings .box-container .box .btn:hover {
-    background: darkorange;
+.listings .box .location i {
+    margin-right: 8px;
+    color: var(--main-color);
 }
 
-/* 🔹 Save Button */
-.listings .box-container .box .save {
-    padding: 1rem 3rem;
-    background-color: var(--light-bg);
-    font-size: 1.8rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s ease-in-out;
-}
-
-.listings .box-container .box .save i {
-    margin-right: 1rem;
+/* Property Details */
+.listings .box .bhk,
+.listings .box .carpet_area,
+.listings .box .bath {
+    font-size: 1.5rem;
     color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.listings .box-container .box .save span {
+.listings .box .bhk i,
+.listings .box .carpet_area i,
+.listings .box .bath i {
+    color: var(--main-color);
+}
+
+/* Price */
+.listings .box .price {
+    font-size: 2rem;
+    color: var(--main-color);
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+/* View Button */
+.listings .box .btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background-color: var(--main-color);
+    color: var(--white);
+    border-radius: 5px;
+    font-size: 1.6rem;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.listings .box .btn:hover {
+    background-color: var(--black);
+}
+.property-details {
+    display: flex;
+    gap: 2rem; /* Adds spacing between items */
+    font-size: 1.6rem;
     color: var(--light-color);
 }
 
-.listings .box-container .box .save:hover {
-    background-color: var(--main-color);
+.property-details p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Spacing between icon and text */
+    margin: 0; /* Remove default margin */
 }
 
-.listings .box-container .box .save:hover i,
-.listings .box-container .box .save:hover span {
-    color: var(--white);
+.property-details i {
+    color: var(--main-color);
 }
+
+.back-btn {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Push to the left corner */
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .arrow {
+    font-size: 22px;
+    margin-right: 5px;
+  }
+  

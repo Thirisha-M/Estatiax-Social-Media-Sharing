@@ -64,7 +64,7 @@ app.post("/property-image/:userId/:propertyId", upload.array("images", 10), asyn
 //Twitter API Setup
 const oauth = OAuth({
   consumer: {
-    key: "cvPxntimFW3510ahSMrblvwN5", // Your Twitter API Key
+    key: "cvPxntimFW3510ahSMrblvwN5", 
     secret: "lmzFiGL5YoZPlumP9bZ581egPnM1AAXRlbFVMoIh49xpayEnx4", // API Secret Key
   },
   signature_method: "HMAC-SHA1",
@@ -73,7 +73,7 @@ const oauth = OAuth({
   },
 });
 
-const callbackUrl = "  https://80fe-2401-4900-22c4-5e64-90cd-384e-b999-63a6.ngrok-free.app "; // Your Angular Callback URL
+const callbackUrl =   "https://3d56-103-91-18-138.ngrok-free.app";
 const couchDBURL = "https://192.168.57.185:5984/estatiax";
 const userName = "d_couchdb";
 const password = "Welcome#2";
@@ -95,6 +95,7 @@ app.get("/twitter-api/request_token", async (req, res) => {
       headers: {
         Authorization: authHeader.Authorization,
         "Content-Type": "application/x-www-form-urlencoded",
+        
       },
     });
 
@@ -164,7 +165,7 @@ app.post("/twitter-api/post", async (req, res) => {
       { text },
       {
         headers: {
-          Authorization: authHeader["Authorization"], // OAuth Header 🔥
+          Authorization: authHeader["Authorization"], // OAuth Header 
           "User-Agent": "v2CreateTweetJS",
           "Content-Type": "application/json",
           Accept: "application/json",

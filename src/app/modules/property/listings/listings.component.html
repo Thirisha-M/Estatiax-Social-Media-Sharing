@@ -1,49 +1,85 @@
-<section class="listings">
-  <h1 class="heading">All properties</h1>
+<body>
+  <section class="listings">
+    <h1 class="heading">All Listings</h1>
 
-  <div class="box-container" *ngIf="propertyList.length > 0; else noProperties">
-    <form *ngFor="let property of propertyList" class="box">
-      <div class="save-btn" (click)="toggleSave(property)">
-        <i class="fas" [ngClass]="property.saved ? 'fa-heart' : 'far fa-heart'"></i>
-        <span>{{ property.saved ? 'Saved' : 'Save' }}</span>
-      </div>
+    <div class="box-container">
+      <div *ngFor="let property of properties" class="box">
+        <input type="hidden" [value]="property._id" />
 
-      <div class="thumb">
-        <p class="total-images"><i class="far fa-image"></i><span>{{ property.totalImages }}</span></p>
-        <img [src]="getImagePath(property.image_01)" [alt]="property.name">
-      </div>
-
-      <div class="admin">
-        <h3>{{ property.user.name[0] }}</h3>
-        <div>
-          <p>{{ property.user.name }}</p>
-          <span>{{ property.date }}</span>
-        </div>
-      </div>
-
-      <div class="box">
-        <div class="price"><i class="fas fa-indian-rupee-sign"></i> {{ property.price | currency:'INR' }}</div>
-        <h3 class="name">{{ property.name }}</h3>
-        <p class="location"><i class="fas fa-map-marker-alt"></i> {{ property.address }}</p>
-
-        <div class="flex">
-          <p><i class="fas fa-house"></i> {{ property.type }}</p>
-          <p><i class="fas fa-tag"></i> {{ property.offer }}</p>
-          <p><i class="fas fa-bed"></i> {{ property.bhk }} BHK</p>
-          <p><i class="fas fa-trowel"></i> {{ property.status }}</p>
-          <p><i class="fas fa-couch"></i> {{ property.furnished }}</p>
-          <p><i class="fas fa-maximize"></i> {{ property.carpet }} sqft</p>
+        <!-- User Info -->
+        <div class="user-info">
+          <div class="user-icon">
+            {{ loggedInUser?.name?.charAt(0).toUpperCase() || 'U' }}
+          </div>
+          <div>
+            <p class="user-name">{{ loggedInUser?.data.name || 'Unknown User' }}</p>
+            <p class="posted-date">
+              <i class="far fa-calendar-alt"></i>
+              {{ property.data.posted_date | date: 'yyyy-MM-dd' }}
+            </p>
+          </div>
         </div>
 
-        <div class="flex-btn">
-          <a [routerLink]="['/view-property', property.id]" class="btn">View Property</a>
-          <button type="button" class="btn" (click)="sendEnquiry(property)">Send Enquiry</button>
+        <!-- Property Thumbnail -->
+        <div class="thumb">
+          <p class="total-images">
+            <i class="far fa-image"></i>
+            <span>{{ property.data.imageUrls?.filePaths?.length || 0 }}</span>
+          </p>
+          <p class="type">
+            <span>{{ property.data.property_type }}</span>
+            <span>{{ property.data.status }}</span>
+          </p>
+          <form (submit)="saveProperty(property.id)" class="save">
+            <button type="submit" name="save" class="far fa-heart"></button>
+          </form>
+          
+
+          <img *ngIf="property.data.imageUrls?.filePaths?.length > 0; else noImage"
+            [src]="property.data.imageUrls.filePaths[0]" alt="Property Image" />
+        </div>
+
+        <ng-template #noImage>
+          <img src="assets/images/default.jpg" alt="Default Image" />
+        </ng-template>
+
+        <!-- Property Details -->
+        <h3 class="name">{{ property.data.property_name }}</h3>
+        <p class="location">
+          <i class="fas fa-map-marker-alt"></i>
+          {{ property.data.address }}
+        </p>
+
+        <!-- Property Features (BHK, Bath, Sqft) -->
+        <div class="property-details">
+          <p class="bhk">
+            <i class="fas fa-bed"></i> {{ property.data.bhk }}
+          </p>
+          <p class="bath">
+            <i class="fas fa-bath"></i> {{ property.data.bathrooms }}
+          </p>
+          <p class="carpet_area">
+            <i class="fas fa-maximize"></i> {{ property.data.carpet_area }} sqft
+          </p>
+        </div>
+
+        <div class="price">₹ {{ property.data.price }}</div>
+
+        <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
+
+        <!-- Share Button -->
+        <div class="shareoptions">
+          <button class="btn" (click)="openModal(property)">Share</button>
         </div>
       </div>
-    </form>
-  </div>
+    </div>
 
-  <ng-template #noProperties>
-    <p class="empty">No properties added yet! <a routerLink="/post-property" class="btn">Add New</a></p>
-  </ng-template>
-</section>
+    <!-- Modal for Sharing Property -->
+    <app-modal *ngIf="isModalOpen" [property]="selectedProperty" [isVisible]="isModalOpen" 
+      (closeModal)="closeModal()">
+    </app-modal>
+  </section>
+  <button (click)="goBack()" class="back-btn">
+    <span class="arrow">←</span> 
+  </button>
+</body>

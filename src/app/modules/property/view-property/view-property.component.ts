@@ -14,7 +14,7 @@ import { FooterComponent } from "../../home/footer/footer.component";
 })
 export class ViewPropertyComponent implements OnInit {
   property: any;
-  user: any;
+  user: any = null;
   isSaved: boolean = false;
   propertyDetails: any[] = [];
   amenities: any[] = [];
@@ -23,21 +23,34 @@ export class ViewPropertyComponent implements OnInit {
   constructor(private route: ActivatedRoute, private propertyService: PropertyService) {}
 
   ngOnInit() {
+    // Fetch logged-in user details from local storage
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+      try {
+        this.user = JSON.parse(storedUser);
+        console.log("Logged-in User: ", this.user);
+      } catch (error) {
+        console.error("Error parsing user data from local storage:", error);
+      }
+    }
+
+    // Fetch property details
     const propertyId = this.route.snapshot.paramMap.get('id');
     if (propertyId) {
       this.propertyService.getPropertyById(propertyId).subscribe(data => {
         if (data) {
           console.log("Property Data: ", data);
           
-          // Assign the property data before using it
+          // Assign the property data
           this.property = data;
           this.isSaved = data.isSaved;
           
-          // Ensure there are images available before setting selectedImage
+          // Set the default selected image
           if (data.data.imageUrls?.filePaths?.length > 0) {
-            this.selectedImage = data.data.imageUrls.filePaths[0]; // Set first image as default
+            this.selectedImage = data.data.imageUrls.filePaths[0];
           }
 
+          // Property details for UI
           this.propertyDetails = [
             { label: 'Rooms', value: data.data.bhk ? `${data.data.bhk} BHK` : 'N/A' },
             { label: 'Deposit', value: data.data.deposit || 'N/A' },
@@ -57,11 +70,6 @@ export class ViewPropertyComponent implements OnInit {
             { label: 'School', value: data.data.school },
             { label: 'Water Supply', value: data.data.watersupply }
           ];
-
-          // Assign user details if available
-          if (data.user) {
-            this.user = data.user;
-          }
         } else {
           console.error("Property not found!");
         }
@@ -69,12 +77,12 @@ export class ViewPropertyComponent implements OnInit {
     }
   }
 
-  toggleSave(propertyId: string) {
-    this.isSaved = !this.isSaved;
-    this.propertyService.saveProperty(propertyId, this.isSaved).subscribe(() => {
-      alert(this.isSaved ? 'Property Saved Successfully!' : 'Property Unsaved!');
-    });
-  }
+  // toggleSave(propertyId: string) {
+  //   this.isSaved = !this.isSaved;
+  //   this.propertyService.saveProperty(propertyId, this.isSaved).subscribe(() => {
+  //     alert(this.isSaved ? 'Property Saved Successfully!' : 'Property Unsaved!');
+  //   });
+  // }
 
   sendEnquiry() {
     alert('Enquiry sent successfully!');

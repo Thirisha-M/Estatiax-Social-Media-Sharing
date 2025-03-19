@@ -1,23 +1,45 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
+import { PropertyService } from '../../../services/property.service';
+import { CommonModule } from '@angular/common';
 
-import { SavedListingsComponent } from './saved-listings.component';
+@Component({
+  selector: 'app-saved-listings',
+  templateUrl: './saved-listings.component.html',
+  styleUrls: ['./saved-listings.component.css'],
+  standalone: true,
+  imports: [CommonModule],
+})
+export class SavedListingsComponent implements OnInit {
+toggleSave(arg0: any) {
+throw new Error('Method not implemented.');
+}
+  savedProperties: any[] = [];
+  userId: string = '';
 
-describe('SavedListingsComponent', () => {
-  let component: SavedListingsComponent;
-  let fixture: ComponentFixture<SavedListingsComponent>;
+  constructor(private propertyService: PropertyService) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SavedListingsComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(SavedListingsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  ngOnInit() {
+    // ✅ Get the logged-in user ID
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        this.userId = user.data._id;  // Ensure the correct user ID is used
+        this.getSavedProperties();
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  getSavedProperties() {
+    this.propertyService.getSavedProperties(this.userId).subscribe(
+      (properties) => {
+        this.savedProperties = properties;
+      },
+      (error) => {
+        console.error("Error fetching saved properties:", error);
+      }
+    );
+  }
+}

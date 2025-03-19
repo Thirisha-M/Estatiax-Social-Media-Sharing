@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { PropertyService } from '../../../services/property.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-post-property',
@@ -19,7 +20,7 @@ export class PostPropertyComponent {
   propertyForm: FormGroup;
   selectedImages: File[] = [];
   imagePreviews: string[] = [];
-  userid = localStorage.getItem("userId") || '';
+  userid = localStorage.getItem("userId") || '';  // Ensure UserID is retrieved
   formData = new FormData();
 
   numericFields = [
@@ -32,6 +33,7 @@ export class PostPropertyComponent {
     { name: 'nature_type', label: 'Nature Type', options: [{ value: 'sale', label: 'Sale' }, { value: 'rent', label: 'Rent' }] },
     { name: 'bhk', label: 'BHK Type', options: [{ value: '1 BHK', label: '1 BHK' }, { value: '2 BHK', label: '2 BHK' }, { value: '3 BHK', label: '3 BHK' }, { value: '4 BHK', label: '4 BHK' }, { value: '5 BHK', label: '5 BHK' }, { value: '6 BHK', label: '6 BHK' }, { value: '7 BHK', label: '7 BHK' }] },
     { name: 'furnished', label: 'Furnished Status', options: [{ value: 'furnished', label: 'Furnished' }, { value: 'unfurnished', label: 'Unfurnished' }] },
+    { name: 'bathrooms', label: 'Bathrooms', options: [{ value: '1 Bathrooms', label: '1 Bathrooms' }, { value: '2 Bathrooms', label: '2 Bathrooms' }, { value: '3 Bathrooms', label: '3 Bathrooms' }, { value: '4 Bathrooms', label: '4 Bathrooms' }, { value: '5 Bathrooms', label: '5 Bathrooms' }, { value: '6 Bathrooms', label: '6 Bathrooms' }] },
   ];
 
   facilities = [
@@ -47,7 +49,7 @@ export class PostPropertyComponent {
     { name: 'marketarea', label: 'Market Area' }
   ];
 
-  constructor(private fb: FormBuilder, private propertyService: PropertyService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router ) {
     this.propertyForm = this.fb.group({
       property_name: ['', Validators.required],
       description: ['', [Validators.required, Validators.maxLength(1000)]],
@@ -55,7 +57,8 @@ export class PostPropertyComponent {
       location: ['', [Validators.required, Validators.maxLength(1000)]],
       facebook: [''],
       instagram: [''],
-      twitter: ['']
+      twitter: [''],
+      posted_date: [{ value: new Date().toISOString().split('T')[0], disabled: true }, Validators.required] // Auto-filled date
     });
 
     this.numericFields.forEach(field => {
@@ -92,32 +95,40 @@ export class PostPropertyComponent {
   onSubmit() {
     const propertyId = `property_2_${uuidv4()}`;
     if (this.propertyForm.valid) {
-      this.propertyService.onStorepropertyImage(this.userid, propertyId, this.formData).subscribe({
-        next: (imageResponse) => {
-          const formData = {
+        // Ensure all form data, including disabled fields, are included
+        const formData = {
             _id: propertyId,
             data: {
-              ...this.propertyForm.value,
-              imageUrls: imageResponse,
-              type: 'property',
-              created_at: new Date().toISOString()
+                ...this.propertyForm.getRawValue(),  
+                userid: this.userid, // Ensure UserID is included in property details
+                type: 'property',
+                created_at: new Date().toISOString()
             }
-          };
+        };
 
-          this.propertyService.createProperty(formData).subscribe({
-            next: () => {
-              alert('Property posted successfully!');
-              this.propertyForm.reset();
-              this.imagePreviews = [];
-              this.selectedImages = [];
+        // Upload images first
+        this.propertyService.onStorepropertyImage(this.userid, propertyId, this.formData).subscribe({
+            next: (imageResponse) => {
+                formData.data['imageUrls'] = imageResponse;  // Store image URLs
+
+                // Now, store property details
+                this.propertyService.createProperty(formData).subscribe({
+                    next: () => {
+                        alert('Property posted successfully!');
+                        this.propertyForm.reset();
+                        this.imagePreviews = [];
+                        this.selectedImages = [];
+
+                        // Redirect to My Listings Page
+                        this.router.navigate(['/my-listings']);
+                    },
+                    error: () => alert('Failed to post property.')
+                });
             },
-            error: () => alert('Failed to post property.')
-          });
-        },
-        error: () => alert('Failed to upload images.')
-      });
+            error: () => alert('Failed to upload images.')
+        });
     } else {
-      alert('Please fill all required fields correctly.');
+        alert('Please fill all required fields correctly.');
     }
-  }
+}
 }

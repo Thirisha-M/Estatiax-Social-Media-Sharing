@@ -1,7 +1,7 @@
     <div class="update-property-container">
         <h2>Update Property</h2>
     
-        <form [formGroup]="propertyForm" (ngSubmit)="onUpdateProperty()">
+        <!-- <form [formGroup]="propertyForm" (ngSubmit)="onUpdateProperty()"> -->
         <!-- Property Title -->
         <div class="form-group">
             <label for="title">Property Title:</label>
@@ -26,10 +26,10 @@
             <input type="text" id="address" class="form-control" formControlName="address" />
         </div>
     
-        <!-- Upload Images -->
+        Upload Images
         <div class="form-group">
             <label for="images">Upload Images:</label>
-            <input type="file" id="images" (change)="onFileSelected($event)" multiple />
+            <!-- <input type="file" id="images" (change)="onFileSelected($event)" multiple /> -->
             <div *ngIf="selectedImages.length > 0">
             <p>Selected Images:</p>
             <ul>
@@ -40,6 +40,6 @@
     
         <!-- Update Button -->
         <button type="submit" class="btn btn-primary" [disabled]="propertyForm.invalid">Update Property</button>
-        </form>
-    </div>
+        <!-- </form>
+    </div> -->
     

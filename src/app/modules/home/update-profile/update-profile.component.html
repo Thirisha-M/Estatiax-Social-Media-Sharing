@@ -1,19 +1,14 @@
-<section class="form-container">
-    <form [formGroup]="updateProfileForm" (ngSubmit)="updateProfile()">
-      <h3>Update Your Account!</h3>
-  
-      <input type="text" formControlName="name" placeholder="Enter your name" class="box">
-      <input type="email" formControlName="email" placeholder="Your Email (Disabled)" class="box">
-      <input type="tel" formControlName="number" placeholder="Enter your phone number" class="box">
-      
-      <input type="password" formControlName="oldPass" placeholder="Enter your old password" class="box">
-      <input type="password" formControlName="newPass" placeholder="Enter your new password" class="box">
-      <input type="password" formControlName="cPass" placeholder="Confirm your new password" class="box">
-      <input type="socialmedialink" formControlName="facebookLink"placeholder="Enter your facebook profile link"class="box">
-      <input type="socialmedialink" formControlName="instagramLink"placeholder="Enter your instagram profile link"class="box">
-      <input type="socialmedialink" formControlName="twitterLink"placeholder="Enter your twitter profile link"class="box">
-      
-      <button type="submit" class="btn" [disabled]="updateProfileForm.invalid">Update Now</button>
-    </form>
-  </section>
-  
+<!-- <section class="form-container">
+  <form [formGroup]=>
+    <h3>Update Your Account!</h3>
+
+    <input type="text" formControlName="name" placeholder="Enter your name" class="box">
+    <input type="email" formControlName="email" placeholder="Your Email (Disabled)" class="box" [disabled]="true">
+    <input type="tel" formControlName="number" placeholder="Enter your phone number" class="box">
+    
+    <input type="password" formControlName="currentPass" placeholder="Enter current password" class="box" required>
+    <input type="password" formControlName="newPass" placeholder="Enter new password (optional)" class="box">
+    
+    <button type="submit" class="btn" [disabled]="updateProfileForm.invalid">Update Now</button> -->
+  <!-- </form>
+</section> -->

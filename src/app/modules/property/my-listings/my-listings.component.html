@@ -2,50 +2,46 @@
   <h1 class="heading">My Listings</h1>
 
   <div class="box-container">
-    <div *ngIf="properties.length > 0">
-      <div *ngFor="let property of properties" class="box">
-        <input type="hidden" [value]="property._id" />
-
-        <div class="thumb">
-          <img *ngIf="property.imageUrls?.filePaths?.length > 0; else noImage" [src]="property.imageUrls.filePaths[0]"
-            alt="Property Image" />
-        </div>
-
-        <ng-template #noImage>
-          <img src="assets/images/default.jpg" alt="Default Image" />
-        </ng-template>
-
-        <div class="price">₹ {{ property.data.price }}</div>
-        <h3>{{ property.data.property_name }}</h3>
-        <p>{{ property.data.address }}</p>
-
-        <div class="flex-btn">
-          <button class="btn" [routerLink]="['/update-property', property._id]">Update</button>
-          <!-- <button class="btn" (click)="deleteProperty(property._id)">Delete</button> -->
-        </div>
-
-        <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
-
-        <div class="shareoptions">
-          <!-- Show "Authorize Twitter" button if the user doesn't have a token -->
-          <button *ngIf="!hasTwitterToken" (click)="authorizeToken(property)">Authorize Twitter</button>
-        
-          <!--Show "Post Tweet" button only if the user has a stored token -->
-          <button *ngIf="hasTwitterToken" class="btn" (click)="openModal(property)">🚀 Post Tweet</button>
-        </div>
-        
-
-          </div>
-        </div>
-        <ng-template #noProperties>
-          <p>No properties added yet!</p>
-          <a [routerLink]="'/post-property'" class="btn">Add New Property</a>
-        </ng-template>
-
-        <!--Modal for Sharing Property -->
-        <app-modal *ngIf="isModalOpen" [property]="selectedProperty" [isVisible]="isModalOpen"
-          (closeModal)="closeModal()" (shareTweet)="shareToTwitter()">
-        </app-modal>
-
-
+    @if (properties.length>0) {
+    <div *ngFor="let property of properties" class="box">
+      <div class="thumb">
+        <img *ngIf="property.data.imageUrls?.filePaths?.length > 0; else noImage"
+          [src]="property.data.imageUrls.filePaths[0]" alt="Property Image" />
       </div>
+
+      <ng-template #noImage>
+        <img src="assets/images/default.jpg" alt="Default Image" />
+      </ng-template>
+
+      <div class="price">₹ {{ property.data.price }}</div>
+      <h3>{{ property.data.property_name }}</h3>
+      <p>{{ property.data.address }}</p>
+
+      <div class="flex-btn">
+        <button class="btn" [routerLink]="['/update-property', property._id]">Update</button>
+      </div>
+
+      <a class="btn" [routerLink]="['/view-property', property._id]">View Property</a>
+
+      <div class="shareoptions">
+        <button class="btn" (click)="openModal(property)">Share</button>
+      </div>
+    </div>
+    }@else {
+    <!-- <ng-template #noProperties> -->
+      <p>No properties added yet!</p>
+      <a [routerLink]="'/post-property'" class="btn">Add New Property</a>
+    <!-- </ng-template> -->
+    }
+
+    <!-- Modal for Sharing Property -->
+    <app-modal *ngIf="isModalOpen" [property]="selectedProperty" [isVisible]="isModalOpen" (closeModal)="closeModal()">
+    </app-modal>
+    <button (click)="goBack()" class="back-btn">
+      <span class="arrow">←</span> 
+    </button>
+    
+
+    
+  </div>
+</section>
