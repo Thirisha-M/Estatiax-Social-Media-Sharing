@@ -290,7 +290,7 @@ section{
    padding-top: .5rem;
 }
 
-.listings .box-container{
+/* .listings .box-container{
    display: grid;
    row-gap: 2rem;
 }
@@ -442,7 +442,7 @@ section{
 
 .listings .box-container form .box .flex p span{
    color: var(--light-color);
-}
+} */
 
 .view-property .details{
    background-color: var(--white);
@@ -1038,7 +1038,7 @@ section{
 }
 
 .my-listings .box-container{
-   display: grid;
+   display: flex;
    grid-template-columns: repeat(auto-fit, 35rem);
    gap: 2rem;
    justify-content: center;

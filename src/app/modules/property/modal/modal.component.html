@@ -1,44 +1,73 @@
-<div class="modal-overlay" *ngIf="isVisible">
-    <div class="modal-content">
-      <button class="close-btn" (click)="close()">✖</button>
-  
-      <h2>Share Property</h2>
-  
-      <div class="property-details">
-        <img *ngIf="property.imageUrls?.filePaths?.length > 0"
-             [src]="property.imageUrls.filePaths[0]"
-             alt="Property Image"
-             class="property-image" />
-        <h3>{{ property.data.property_name }}</h3>
-        <p>📍 {{ property.data.address }}</p>
-        <p>💰 ₹{{ property.data.price }}</p>
-      </div>
-  
-      <!-- Social Media Selection -->
-      <div class="social-icons">
+<div class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-btn" (click)="close()">✖</button>
+
+    <h2>Share Property</h2>
+
+    <div class="property-details" *ngIf="property; else loading">
+      <img *ngIf="property.data?.imageUrls?.filePaths?.length > 0"
+           [src]="property.data.imageUrls.filePaths[0]"
+           alt="Property Image"
+           class="property-image" />
+
+      <h3>{{ property.data?.property_name || 'No Name' }}</h3>
+      <p>{{ property.data?.address || 'No Address' }}</p>
+      <p>₹{{ property.data?.price || 'N/A' }}</p>
+    </div>
+
+    <ng-template #loading>
+      <p>Loading Property Details...</p>
+    </ng-template>
+
+    <!-- Social Media Selection -->
+    <div class="social-icons">
+      <div class="social-icon-container" 
+           [class.selected]="selectedPlatform === 'twitter'" 
+           (click)="selectPlatform('twitter')">
         <img src="assets/images/twitter-icon.jpg"
              alt="Twitter"
              class="social-icon"
-             [class.selected]="selectedPlatform === 'twitter'"
-             (click)="selectPlatform('twitter')" />
-  
+             [class.disabled]="!hasTwitterToken"
+             [class.grayscale]="!hasTwitterToken" />
+        <span *ngIf="selectedPlatform === 'twitter' && hasTwitterToken" class="tick">✔</span>
+      </div>
+
+      <div class="social-icon-container" 
+           [class.selected]="selectedPlatform === 'instagram'" 
+           (click)="selectPlatform('instagram')">
         <img src="assets/images/instagram-logo.jpg"
              alt="Instagram"
              class="social-icon"
-             [class.selected]="selectedPlatform === 'instagram'"
-             (click)="selectPlatform('instagram')" />
-  
+             [class.disabled]="!hasInstagramToken"
+             [class.grayscale]="!hasInstagramToken" />
+        <span *ngIf="selectedPlatform === 'instagram' && hasInstagramToken" class="tick">✔</span>
+      </div>
+
+      <div class="social-icon-container" 
+           [class.selected]="selectedPlatform === 'facebook'" 
+           (click)="selectPlatform('facebook')">
         <img src="assets/images/facebook-icon.jpg"
              alt="Facebook"
              class="social-icon"
-             [class.selected]="selectedPlatform === 'facebook'"
-             (click)="selectPlatform('facebook')" />
+             [class.disabled]="!hasFacebookToken"
+             [class.grayscale]="!hasFacebookToken" />
+        <span *ngIf="selectedPlatform === 'facebook' && hasFacebookToken" class="tick">✔</span>
       </div>
-  
-      <!-- Share Button -->
-      <button class="share-btn" (click)="share()">
-        Share on {{ selectedPlatform | titlecase }}
-      </button>
     </div>
+
+    <!-- Error Message Below Icons -->
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+    <!-- Unauthorized Warning -->
+    <p *ngIf="!isAuthorized() && selectedPlatform" class="auth-warning">
+      
+      <button class="authorize-btn" (click)="goToSettings()">Authorize Now</button>
+    </p>
+
+    <!-- Share Button -->
+    <button class="share-btn" (click)="share()" 
+            [disabled]="!selectedPlatform || !isAuthorized()">
+      Share on {{ selectedPlatform | titlecase }}
+    </button>
   </div>
-  
+</div>

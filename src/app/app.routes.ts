@@ -21,6 +21,7 @@ import { UpdateProfileComponent } from './modules/home/update-profile/update-pro
 import { RequestsComponent } from './modules/property/requests/requests.component';
 import { UpdatePropertyComponent } from './modules/property/update-property/update-property.component';
 import { ModalComponent } from './modules/property/modal/modal.component';
+import { SettingsComponent } from './modules/home/settings/settings.component';
 
 
 export const routes: Routes = [
@@ -44,8 +45,8 @@ export const routes: Routes = [
   {path:'update-profile',component:UpdateProfileComponent,canActivate:[AuthGuard]},
   {path:'requests',component:RequestsComponent,canActivate:[AuthGuard]},
   {path:'update-property',component:UpdatePropertyComponent},
-  {path:'modal',component:ModalComponent},
-  
+  {path:'modal/:id',component:ModalComponent},
+  {path:'settings',component:SettingsComponent,canActivate:[AuthGuard]}
 
 
 ];

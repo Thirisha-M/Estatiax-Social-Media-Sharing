@@ -1,35 +1,84 @@
-.shareoptions {
+.my-listings .box-container{
   display: flex;
-  gap: 10px; /* Space between buttons */
-  justify-content: center; /* Center align */
-  align-items: center;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: start;
 }
 
-.shareoptions button {
-  padding: 12px 18px;
+.my-listings .box-container .box{
+  background-color: var(--white);
+  box-shadow: var(--box-shodow);
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+.my-listings .box-container .box .thumb{
+  position: relative;
+  height: 20rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-listings .box-container .box .thumb img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.my-listings .box-container .box .thumb p{
+  position: absolute;
+  top: 1rem; left: 1rem;
+  background-color: rgba(0,0,0,.3);
+  color: var(--white);
+  padding:.5rem 1rem;
+  font-size: 1.7rem;
+}
+
+.my-listings .box-container .box .thumb p i{
+  margin-right: .7rem;
+}
+
+.my-listings .box-container .box .price{
+  font-size: 2rem;
+  color: var(--main-color);
+}
+
+.my-listings .box-container .box .price i{
+  margin-right: 1rem;
+}
+
+.my-listings .box-container .box .name{
+  font-size: 2rem;
+  color: var(--black);
+  line-height: 1.5;
+  padding: .5rem 0;
+  text-overflow: ellipsis;
+}
+
+.my-listings .box-container .box .location{
+  padding-bottom: .5rem;
+  font-size: 1.7rem;
+  color: var(--light-color);
+}
+
+.my-listings .box-container .box .location i{
+  margin-right: 1rem;
+  color: var(--main-color);
+}
+.back-btn {
+  position: absolute;
+  top: 20px; /* Adjust as needed */
+  left: 20px; /* Push to the left corner */
+  background: none;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
 }
 
-.shareoptions button:first-child {
-  background-color: #1DA1F2; /* Twitter Blue */
-  color: white;
-}
-
-.shareoptions button:first-child:hover {
-  background-color: #0d8bd9;
-}
-
-.shareoptions button:last-child {
-  background-color: #ff9800; /* Vibrant Orange */
-  color: white;
-}
-
-.shareoptions button:last-child:hover {
-  background-color: #e68900;
+.arrow {
+  font-size: 22px;
+  margin-right: 5px;
 }

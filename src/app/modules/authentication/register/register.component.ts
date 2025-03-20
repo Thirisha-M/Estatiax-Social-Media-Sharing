@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
         Validators.pattern('^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
       ]],
       confirmPassword: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator }); // ✅ Correctly applied here
+    }, { validators: this.passwordMatchValidator });
   }
 
   ngOnInit() {
@@ -42,44 +42,34 @@ export class RegisterComponent implements OnInit {
   nameValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
-  
-    // ✅ Ensures:
-    // - Name starts with uppercase
-    // - Allows spaces
-    // - Only 1 or 2 uppercase letters in total
     const nameRegex = /^[A-Z][a-z]*(?: [A-Z][a-z]*)*$/;
     const uppercaseCount = (value.match(/[A-Z]/g) || []).length;
-  
+
     if (!nameRegex.test(value)) {
       return { invalidName: true };
     }
-  
+
     if (uppercaseCount < 1 || uppercaseCount > 2) {
       return { uppercaseLimit: true };
     }
-  
+
     return null;
   }
-  
 
-
-  // ✅ Password Match Validator
   passwordMatchValidator(group: FormGroup): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { mismatch: true };
   }
 
-  // ✅ Register Function
   register() {
     if (this.registerForm.valid) {
       const { name, email, phone, password } = this.registerForm.value;
 
-      // Check if Email Already Exists
+
       this.propertyService.getUserDetails(email).subscribe({
         next: (response: any) => {
-          const emailExists = response.rows.some((user: any) => user.value.email === email); // ✅ Fixed Condition
-
+          const emailExists = response.rows.some((user: any) => user.value.email === email);
           if (emailExists) {
             alert('The email address is already in use. Please use a different email.');
             this.registerForm.get('email')?.setErrors({ emailTaken: true });
@@ -89,7 +79,6 @@ export class RegisterComponent implements OnInit {
               data: { name, email, phone, password, type: 'user' }
             };
 
-            // ✅ Store User Data in CouchDB
             this.propertyService.addUser(userData).subscribe({
               next: () => {
                 alert('Registration Successful!');

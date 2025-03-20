@@ -1,82 +1,71 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { PropertyService } from '../../../services/property.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-interface Property {
-  id: number;
-  image_01: string;
-  name: string;
-  address: string;
-  price: number;
-  type: string;
-  offer: string;
-  bhk: number;
-  status: string;
-  furnished: string;
-  carpet: number;
-  date: string;
-  user: { id: number; name: string };
-  saved: boolean;
-  totalImages: number;
-}
+import { ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-listings',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './listings.component.html',
   styleUrls: ['./listings.component.css'],
+  standalone: true,
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, ModalComponent],
 })
-export class ListingsComponent {
-  propertyList: Property[] = [
-    {
-      id: 101,
-      image_01: 'home-1.jpg',
-      name: 'Individual Home',
-      address: 'MGR Nagar',
-      price: 5000000,
-      type: 'Villa',
-      offer: 'For Sale',
-      bhk: 4,
-      status: 'Available',
-      furnished: 'Fully Furnished',
-      carpet: 3200,
-      date: '2025-02-23',
-      user: { id: 1, name: 'Thirisha' },
-      saved: false,
-      totalImages: 1
-    },
-    {
-      id: 102,
-      image_01: 'home-3.webp',
-      name: 'Home',
-      address: 'Madurai',
-      price: 2500000,
-      type: 'Apartment',
-      offer: 'For Rent',
-      bhk: 2,
-      status: 'Occupied',
-      furnished: 'Semi-Furnished',
-      carpet: 1200,
-      date: '2025-02-20',
-      user: { id: 2, name: 'Divya' },
-      saved: true,
-      totalImages: 2
+export class ListingsComponent implements OnInit {
+  properties: any[] = [];
+  loggedInUser: any = null; // Store logged-in user details
+  selectedProperty: any = null;
+  isModalOpen: boolean = false;
+  userId = localStorage.getItem('user_id'); // Get logged-in user email
+
+  constructor(private propertyService: PropertyService, private router: Router) {}
+
+  ngOnInit() {
+    this.getLoggedInUser();
+    this.loadAllProperties();
+  }
+
+  // Retrieve logged-in user details from local storage
+  getLoggedInUser() {
+    const userData = localStorage.getItem('userDetails');
+    if (userData) {
+      this.loggedInUser = JSON.parse(userData);
     }
-  ];
-
-  toggleSave(property: Property) {
-    property.saved = !property.saved;
   }
 
-  sendEnquiry(property: Property) {
-    alert(`Enquiry sent for ${property.name}`);
+  loadAllProperties() {
+    this.propertyService.getAllProperties().subscribe((data: any) => {
+      console.log(data);
+      if (data.rows.length > 0) {
+        this.properties = data.rows.map((property: any) => property.value);
+      }
+      console.log('All Properties:', this.properties);
+    });
   }
 
-  getImagePath(imageName: string): string {
-    if (!imageName) {
-      return './assets/images/default.jpg'; // Fallback image
+  openModal(property: any) {
+    this.selectedProperty = property;
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedProperty = null;
+  }
+  goBack() {
+    this.router.navigate(['']); // Replace '/home' with your actual listings page route
+  }
+  saveProperty(propertyId: string) {
+    if (this.userId) {
+      this.propertyService.saveProperty(propertyId,this.userId).subscribe(() => {
+        alert('Property saved successfully!');
+      }, error => {
+        alert('Error saving property!');
+      });
+    } else {
+      alert('User email is not available!');
     }
-    return './assets/images/' + imageName;
   }
+
 }

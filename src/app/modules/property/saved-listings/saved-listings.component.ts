@@ -1,39 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { PropertyService } from '../../../services/property.service';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-saved-listings',
   templateUrl: './saved-listings.component.html',
-  styleUrls: ['./saved-listings.component.css'],
-  standalone: true,
-  imports: [RouterModule],
+  styleUrls: ['./saved-listings.component.css']
 })
 export class SavedListingsComponent implements OnInit {
   savedProperties: any[] = [];
-  userId: string = 'USER_ID_FROM_AUTH'; // Replace with actual user ID from auth service
-
-  constructor(private propertyService: PropertyService) {}
+  userEmail: string = ""; // Get logged-in user email
+  userId: string = localStorage.getItem('userEmail') ?? '';
+  constructor(private propertyService: PropertyService) { }
 
   ngOnInit() {
-    this.getSavedProperties();
+    this.loadSavedProperties();
+    const email = localStorage.getItem("userEmail");
+    console.log(email);
+    const userId = localStorage.getItem("userId"); // Get logged-in user email
+    // this.userId = userId
+    console.log(this.userId);
+
+
+
+    // this.userEmail=email
+    //] console.log(this.userid);
+
+
   }
 
-  // ✅ Now correctly calls getSavedProperties from service
-  getSavedProperties() {
-    this.propertyService.getSavedProperties(this.userId).subscribe((data: any) => {
-      this.savedProperties = data;
-    });
-  }
+  loadSavedProperties() {
+    if (this.userId) {
+      this.propertyService.getSavedProperties(this.userId).subscribe({
+        next: (response: any) => {
+          console.log(response);
 
-  // ✅ Toggle Save/Unsave property
-  toggleSave(propertyId: string) {
-    this.propertyService.saveProperty(propertyId, false).subscribe(() => {
-      this.getSavedProperties(); // Refresh list after removing
-    });
-  }
-
-  sendEnquiry() {
-    alert('Enquiry sent successfully!');
+        },
+        error: (error) => {
+          console.error('Error fetching saved properties:', error);
+        }
+      });
+    } else {
+      console.error('User email is null');
+    }
   }
 }
+
