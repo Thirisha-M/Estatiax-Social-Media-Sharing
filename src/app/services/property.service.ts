@@ -217,23 +217,30 @@ export class PropertyService {
     return this.http.post<any>(URL, propertyData);
   }
 
- // Save Property
+ // Save Property for a User
  saveProperty(userId: string, propertyId: string): Observable<any> {
   const saveData = {
-    saved_by_id: userId,
-    property_id: propertyId,
-    saved_at: new Date().toISOString()
+    data: {
+      user_id: userId,
+      property_id: propertyId,
+    }
   };
 
-  return this.http.post(`${this.baseURL}//saved_by_id`, saveData, {
+  return this.http.post(`${this.baseURL}/saved_properties`, saveData, {
     headers: this.headers,
-  });
+  }).pipe(
+    catchError((error) => throwError(() => new Error(error)))
+  );
 }
 
 // Fetch Saved Properties for a User
 getSavedProperties(userId: string): Observable<any> {
-  return this.http.get(`${this.baseURL}_design/View/_view/saved_by_id="${userId}"`, {
+  return this.http.get(`${this.baseURL}/_design/View/_view/saved_by_id?key="${userId}"`, {
     headers: this.headers,
-  });
+  }).pipe(
+    map((response: any) => response.rows.map((row: any) => row.value)),
+    catchError(error => throwError(() => new Error(error)))
+  );
 }
 }
+

@@ -73,10 +73,10 @@ const oauth = OAuth({
   },
 });
 
-const callbackUrl =   "https://3d56-103-91-18-138.ngrok-free.app";
-const couchDBURL = "https://192.168.57.185:5984/estatiax";
-const userName = "d_couchdb";
-const password = "Welcome#2";
+const callbackUrl =   "https://d5c6-2409-40f4-1001-9e34-989f-11e0-17c1-a7d7.ngrok-free.app";
+// const couchDBURL = "https://192.168.57.185:5984/estatiax";
+// const userName = "d_couchdb";
+// const password = "Welcome#2";
 
 //1) Request Token API
 app.get("/twitter-api/request_token", async (req, res) => {
